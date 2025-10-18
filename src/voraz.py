@@ -12,13 +12,5 @@ def roV(finca):
 
     return orden, costo
 
-if __name__ == "__main__":
-    finca = [
-        (10, 3, 4),
-        (5, 3, 4),
-        (2, 2, 1)
-    ]
-    orden, costo = roV(finca)
-    print("Orden de riego:", orden)
-    print("Costo total:", costo)
+
    
