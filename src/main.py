@@ -2,14 +2,24 @@ from tkinter import Tk, filedialog
 from voraz import roV
 
 
+
+
 #cargar las fincas en tuplas con sus datos (ts, tr, p)
 
 def cargar_txt(load_file):
     finca = []
     with open(load_file, "r") as file:
         for line in file:
-            ts, tr, p = map(int, line.strip().split())
-            finca.append((ts, tr, p))
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                ts, tr, p = map(float, line.strip().split())
+                finca.append((ts, tr, p))
+   
+            except ValueError:
+                print(f"Linea invalida en el archivo: {line}")
+                continue
     return finca
 
 def choose_file():
