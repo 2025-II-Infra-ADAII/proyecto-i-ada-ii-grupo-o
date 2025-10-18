@@ -105,24 +105,29 @@ $$
 ---
 
 ### 3.3 Programación Dinámica
+
 Se utiliza una **máscara de bits** para representar subconjuntos de tablones.  
 Cada subconjunto define un **subproblema**: el costo mínimo de regar ese grupo.
 
 **Relación de recurrencia:**
 
 $$
-dp[\text{mask}] = \min_{j \in \text{mask}} \left\{
+dp[\text{mask}] =
+\min_{j \in \text{mask}}
+\Big(
 dp[\text{mask} \setminus \{j\}] +
 p_j \cdot \max(0, \text{sum\_tr} + tr_j - ts_j)
-\right\}
+\Big)
 $$
 
 **Complejidad temporal:**
+
 $$
 T(n) = O(n \times 2^n)
 $$
 
 **Complejidad espacial:**
+
 $$
 S(n) = O(2^n)
 $$
@@ -134,7 +139,6 @@ $$
 A continuación se presentan las distintas fincas evaluadas y los resultados obtenidos con cada enfoque.
 
 ---
-
 ### Finca 1
 $$
 \text{Finca}_1 =
@@ -159,7 +163,7 @@ $$
 \end{bmatrix}
 $$
 
-###  Finca 3
+### Finca 3
 $$
 \text{Finca}_3 =
 \begin{bmatrix}
@@ -171,7 +175,7 @@ $$
 \end{bmatrix}
 $$
 
-###  Finca 4
+### Finca 4
 $$
 \text{Finca}_4 =
 \begin{bmatrix}
@@ -183,7 +187,7 @@ $$
 \end{bmatrix}
 $$
 
-###  Finca 5
+### Finca 5
 $$
 \text{Finca}_5 =
 \begin{bmatrix}
@@ -195,7 +199,7 @@ $$
 \end{bmatrix}
 $$
 
-###  Finca 6
+### Finca 6
 $$
 \text{Finca}_6 =
 \begin{bmatrix}
@@ -206,7 +210,6 @@ $$
 9 & 3 & 1
 \end{bmatrix}
 $$
-
 ---
 
 ##  Comparación de Resultados
