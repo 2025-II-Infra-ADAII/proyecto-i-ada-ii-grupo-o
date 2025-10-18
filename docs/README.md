@@ -1,122 +1,48 @@
-# 📝 Guía Completa de Markdown para Documentación Técnica
+# Proyecto Integrador ADA II — Plan de Riego Óptimo de una Finca
 
-## 🔍 Introducción
+## Integrantes
 
-Markdown es un lenguaje de marcado ligero para crear documentos estructurados. Esta guía muestra sintaxis avanzada con ejemplos prácticos para documentación académica y técnica.
+| Nombre | Código |
+|:-----------------------------|:----------:|
+| Juan David García Arroyave | 2359450 |
+| Sebastián Zacipa Martínez | 2359695 |
+| Juan José Hincapié Tascon | 2359493 |
 
-## 📚 Sintaxis Básica
+---
 
-### 📝 Texto
+## Descripción del Proyecto
 
-_Cursiva_ o _Cursiva_
-**Negrita** o **Negrita**
-~~Tachado~~
-`Código en línea`
+Este proyecto desarrolla tres enfoques algorítmicos para resolver el **problema del riego óptimo de una finca**, buscando minimizar el costo total de retraso en el riego de los tablones.
 
-Texto normal <sub>subíndice</sub>
-Texto normal <sup>superíndice</sup>
+Cada tablón está definido por tres parámetros:
 
-### 🏷️ Encabezados
+- `ts`: tiempo de supervivencia  
+- `tr`: tiempo de riego  
+- `p`: penalización o prioridad  
 
-# Nivel 1 (h1)
+El costo total se define como:
 
-## Nivel 2 (h2)
+$$
+CRF_\Pi = \sum_{i=0}^{n-1} p_i \cdot \max(0, (t_\Pi(i) + tr_i) - ts_i)
+$$
 
-### Nivel 3 (h3)
+---
 
-#### Nivel 4 (h4)
+## ⚙️ Métodos Implementados
 
-## 📊 Tablas Avanzadas
+### 🔹 Fuerza Bruta
+Evalúa todas las permutaciones posibles del orden de riego y selecciona el de menor costo.  
+**Complejidad:** $O(n!)$
 
-### Tabla Básica
+### 🔹 Algoritmo Voraz
+Riega primero los tablones con menor tiempo de supervivencia ($t_s$).  
+**Complejidad:** $O(n \log n)$
 
-| Tecnología | Uso común          | Dificultad |
-| ---------- | ------------------ | ---------- |
-| Python     | Ciencia de datos   | Media      |
-| JavaScript | Desarrollo web     | Baja       |
-| Rust       | Sistemas embebidos | Alta       |
+### 🔹 Programación Dinámica
+Usa máscaras de bits para evaluar todos los subconjuntos posibles de tablones.  
+**Complejidad:** $O(n \times 2^n)$
 
-### Tabla con Alineación
+---
 
-| Alineado a la izquierda | Centrado | Alineado a la derecha |
-| :---------------------- | :------: | --------------------: |
-| Texto                   |  Texto   |                Número |
-| Más ejemplos            | Centrado |                 12.34 |
 
-## 📂 Estructura de Documentos
 
-### 📑 Listas Jerárquicas
-
-1. Primer nivel
-   - Segundo nivel
-     - Tercer nivel
-       - Cuarto nivel
-2. Otro ítem principal
-
-```
-
-### 📌 Listas de Tareas
-
-- [x] Investigación inicial
-- [ ] Pruebas de laboratorio
-- [ ] Redacción de conclusiones
-```
-
-## 🧮 Elementos Técnicos
-
-### 📐 Fórmulas Matemáticas (LaTeX)
-
-Ecuación en línea: `$E=mc^2$`
-
-Bloque de ecuación:
-
-```math
-\int_{a}^{b} x^2 \,dx = \left. \frac{x^3}{3} \right|_{a}^{b}
-```
-
-### 💻 Bloques de Código
-
-```python
-def factorial(n):
-    if n == 0:
-        return 1
-    else:
-        return n * factorial(n-1)
-```
-
-## 🖼️ Multimedia e Integraciones
-
-### Imágenes
-
-![Texto alternativo](imagen.png "Título opcional")
-
-### Diagramas Mermaid
-
-```mermaid
-graph TD
-    A[Inicio] --> B{Decisión}
-    B -->|Sí| C[Proceso 1]
-    B -->|No| D[Proceso 2]
-```
-
-## 🔗 Recursos Adicionales
-
-- [Guía oficial GitHub Markdown](https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
-- [Markdown Guide](https://www.markdownguide.org/)
-- [Editor interactivo Markdown](https://dillinger.io/)
-
-✒️ **Consejo profesional:** Use extensiones como [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) en VS Code para obtener vistas previas en tiempo real y atajos de formato.
-
-### Mejoras clave:
-
-1. **Organización profesional** por categorías de funcionalidad
-2. **Ejemplos ejecutables** que muestran tanto el código markdown como su renderizado
-3. **Sintaxis avanzada** para necesidades técnicas (fórmulas, diagramas)
-4. **Secciones especializadas** para documentación académica
-5. **Consejos profesionales** basados en experiencia real
-6. **Recursos adicionales** verificados
-7. **Compatibilidad** con extensiones populares
-
-```
-
-```
