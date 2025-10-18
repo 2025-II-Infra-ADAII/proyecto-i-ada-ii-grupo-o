@@ -1,0 +1,68 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*$py.class
+
+# Archivos de entorno virtual
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Archivos de dependencias o builds
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de pytest y cobertura
+.pytest_cache/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# --- VSCode ---
+.vscode/
+.history/
+*.code-workspace
+
+# --- Archivos temporales del sistema ---
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux / macOS
+*.swp
+*.swo
+*~
+.DS_Store
+.Trash-*
+.nfs*
+
+# --- Archivos del entorno del proyecto ---
+# Artefactos generados por pipelines o ejecución
+dist/
+logs/
+*.txt
+!docs/*.txt  # permite los txt del informe en docs
