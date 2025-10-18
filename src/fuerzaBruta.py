@@ -15,7 +15,6 @@ def calcular_costo(finca, perm):
 
 
 def roFB(finca):
-
     n = len(finca)
     mejor_perm = None
     costo_minimo = float('inf')
@@ -26,6 +25,7 @@ def roFB(finca):
             costo_minimo = costo
             mejor_perm = perm
 
-    return mejor_perm, costo_minimo
+    if mejor_perm is None:
+        return [], 0
 
-
+    return list(mejor_perm), costo_minimo
