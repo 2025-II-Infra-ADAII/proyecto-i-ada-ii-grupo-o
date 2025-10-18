@@ -1,20 +1,20 @@
 # Proyecto: Plan de Riego Óptimo de una Finca
 
 ## Integrantes
-- **Juan David García Arroyave** – 2359450  
-- **Sebastián Zacipa Martínez** – 2359695  
-- **Juan José Hincapié Tascon** – 2359493  
+- *Juan David García Arroyave* – 2359450  
+- *Sebastián Zacipa Martínez* – 2359695  
+- *Juan José Hincapié Tascon* – 2359493  
 
 ---
 
 ## Introducción
 
-El presente proyecto aplica tres enfoques algorítmicos para resolver el problema del **riego óptimo de una finca**:
-- **Fuerza Bruta**
-- **Algoritmo Voraz**
-- **Programación Dinámica**
+El presente proyecto aplica tres enfoques algorítmicos para resolver el problema del *riego óptimo de una finca*:
+- *Fuerza Bruta*
+- *Algoritmo Voraz*
+- *Programación Dinámica*
 
-Cada método busca determinar el orden de riego que **minimiza el costo total**, comparando eficiencia, exactitud y complejidad temporal.
+Cada método busca determinar el orden de riego que *minimiza el costo total*, comparando eficiencia, exactitud y complejidad temporal.
 
 ---
 
@@ -24,11 +24,11 @@ Cada tablón de la finca se describe con tres parámetros:
 
 | Parámetro | Descripción |
 |------------|--------------|
-| `ts` | Tiempo de supervivencia (máximo antes de secarse) |
-| `tr` | Tiempo requerido de riego |
-| `p`  | Penalización o prioridad |
+| ts | Tiempo de supervivencia (máximo antes de secarse) |
+| tr | Tiempo requerido de riego |
+| p  | Penalización o prioridad |
 
-El objetivo es minimizar el **costo total de retraso**, definido matemáticamente como:
+El objetivo es minimizar el *costo total de retraso*, definido matemáticamente como:
 
 $$
 CRF_\Pi = \sum_{i=0}^{n-1} p_i \cdot \max(0, (t_\Pi(i) + tr_i) - ts_i)
@@ -41,10 +41,119 @@ donde:
 
 ## Estrategias Implementadas
 
-###  3.1 Fuerza Bruta
-Evalúa todas las permutaciones posibles del orden de riego y selecciona la de menor costo.
+### 3.1 Fuerza Bruta
 
-**Complejidad:**
+La estrategia de *fuerza bruta* evalúa *todas las posibles permutaciones* del orden de riego, calcula el costo total de cada una y selecciona la que minimiza el valor de $CRF_\Pi$.
+
+#### Descripción del algoritmo
+1. Generar todas las permutaciones posibles de los índices $\{0, 1, \dots, n-1\}$.  
+2. Para cada permutación $\Pi$, calcular el costo:
+   $$
+   CRF_\Pi = \sum_{i=0}^{n-1} p_{\Pi_i} \cdot \max(0, (t_{\Pi_i} + tr_{\Pi_i}) - ts_{\Pi_i})
+   $$
+3. Retornar la permutación con el costo mínimo.
+
+#### Implementación en Python
+
+python
+from itertools import permutations
+
+def calcular_costo(finca, perm):
+    tiempo_inicio = 0
+    costo_total = 0
+    for i in perm:
+        ts, tr, p = finca[i]
+        fin_riego = tiempo_inicio + tr
+        retraso = max(0, fin_riego - ts)
+        costo_total += p * retraso
+        tiempo_inicio = fin_riego
+    return costo_total
+
+
+def roFB(finca):
+    n = len(finca)
+    mejor_perm = None
+    costo_minimo = float('inf')
+
+    for perm in permutations(range(n)):
+        costo = calcular_costo(finca, perm)
+        if costo < costo_minimo:
+            costo_minimo = costo
+            mejor_perm = perm
+
+    return mejor_perm, costo_minimo
+
+
+Ejemplo de ejecución
+Entrada:
+
+𝐹
+1
+=
+⟨
+⟨
+10
+,
+3
+,
+4
+⟩
+,
+⟨
+5
+,
+3
+,
+3
+⟩
+,
+⟨
+2
+,
+2
+,
+1
+⟩
+,
+⟨
+8
+,
+1
+,
+1
+⟩
+,
+⟨
+6
+,
+4
+,
+2
+⟩
+⟩
+F 
+1
+​
+ =⟨⟨10,3,4⟩,⟨5,3,3⟩,⟨2,2,1⟩,⟨8,1,1⟩,⟨6,4,2⟩⟩
+Salida esperada:
+
+yaml
+Copiar código
+Mejor orden de riego: (2, 1, 4, 3, 0)
+Costo mínimo: 16
+Complejidad
+Generación de permutaciones: $O(n!)$
+
+Evaluación de cada permutación: $O(n)$
+
+Por tanto, la complejidad total es:
+
+$$𝑇(𝑛)=𝑂(𝑛×𝑛!)$$
+
+T(n)=O(n×n!)
+Esta estrategia garantiza la solución óptima, pero es computacionalmente inviable para $n > 10$.
+
+*Complejidad:*
 $$
 O(n!)
 $$
@@ -53,11 +162,11 @@ $$
 
 ### 3.2 Algoritmo Voraz
 
-El método voraz **riega primero los tablones con menor tiempo de supervivencia ($t_s$)**.  
+El método voraz *riega primero los tablones con menor tiempo de supervivencia ($t_s$)*.  
 Aunque no siempre encuentra la solución óptima, es eficiente en tiempo y proporciona una solución razonablemente buena.
 
 función implementada en Python:
-```python
+python
 def roV(finca):
     orden = sorted(range(len(finca)), key=lambda i: finca[i][0])
 
@@ -71,23 +180,23 @@ def roV(finca):
         tiempo = fin_riego
 
     return orden, costo
-```
 
 
 
-**Complejidad:**
+
+*Complejidad:*
 
 El algoritmo tiene dos fases principales:
 
-1. **Ordenación de los tablones**
+1. *Ordenación de los tablones*
 
-   La función `sorted()` usa el algoritmo **Timsort**, cuya complejidad promedio y peor caso es:
+   La función sorted() usa el algoritmo *Timsort*, cuya complejidad promedio y peor caso es:
 
    $$
    O(n \log n)
    $$
 
-2. **Recorrido secuencial para calcular el costo**
+2. *Recorrido secuencial para calcular el costo*
 
    Solo realiza una iteración sobre los $n$ tablones:
 
@@ -106,10 +215,10 @@ $$
 
 ### 3.3 Programación Dinámica
 
-Se utiliza una **máscara de bits** para representar subconjuntos de tablones.  
-Cada subconjunto define un **subproblema**: el costo mínimo de regar ese grupo.
+Se utiliza una *máscara de bits* para representar subconjuntos de tablones.  
+Cada subconjunto define un *subproblema*: el costo mínimo de regar ese grupo.
 
-**Relación de recurrencia:**
+*Relación de recurrencia:*
 
 $$
 dp[\text{mask}] =
@@ -120,13 +229,13 @@ p_j \cdot \max(0, \text{sum\_tr} + tr_j - ts_j)
 \Big)
 $$
 
-**Complejidad temporal:**
+*Complejidad temporal:*
 
 $$
 T(n) = O(n \times 2^n)
 $$
 
-**Complejidad espacial:**
+*Complejidad espacial:*
 
 $$
 S(n) = O(2^n)
@@ -229,16 +338,15 @@ $$
 | 6 | Voraz | [2, 4, 1, 3, 0] | 30 |
 | 6 | Dinámica | [2, 1, 4, 3, 0] | 52 |
 
->  En todos los casos, la **programación dinámica** obtiene un costo total menor o igual al del método **voraz**, validando que encuentra la **solución óptima**.
+>  En todos los casos, la *programación dinámica* obtiene un costo total menor o igual al del método *voraz, validando que encuentra la **solución óptima*.
 
 ---
 
 ## Conclusiones
 
-- El método **voraz** ofrece una solución rápida con bajo costo computacional, aunque no siempre óptima.  
-- La **programación dinámica** garantiza la **solución óptima**, pero su costo computacional crece exponencialmente con $n$.  
-- Para $n > 20$, la PD se vuelve **inviable en tiempo y espacio**, mientras que el método voraz sigue siendo eficiente.  
-- Este proyecto demuestra cómo diferentes paradigmas algorítmicos equilibran **precisión vs eficiencia**.
+- El método *voraz* ofrece una solución rápida con bajo costo computacional, aunque no siempre óptima.  
+- La *programación dinámica* garantiza la *solución óptima*, pero su costo computacional crece exponencialmente con $n$.  
+- Para $n > 20$, la PD se vuelve *inviable en tiempo y espacio*, mientras que el método voraz sigue siendo eficiente.  
+- Este proyecto demuestra cómo diferentes paradigmas algorítmicos equilibran *precisión vs eficiencia*.
 
 ---
-
