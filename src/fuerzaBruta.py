@@ -29,9 +29,3 @@ def roFB(finca):
     return mejor_perm, costo_minimo
 
 
-# Ejemplo de prueba del PDF
-if __name__ == "__main__":
-    finca = [(10, 3, 4), (5, 3, 3), (2, 2, 1), (8, 1, 1), (6, 4, 2)]
-    perm, costo = roFB(finca)
-    print("Mejor orden de riego:", perm)
-    print("Costo mínimo:", costo)
