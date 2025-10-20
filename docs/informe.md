@@ -113,7 +113,8 @@ El método voraz *riega primero los tablones con menor tiempo de supervivencia (
 Aunque no siempre encuentra la solución óptima, es eficiente en tiempo y proporciona una solución razonablemente buena.
 
 función implementada en Python:
-python
+
+```python
 def roV(finca):
     orden = sorted(range(len(finca)), key=lambda i: finca[i][0])
 
@@ -127,8 +128,7 @@ def roV(finca):
         tiempo = fin_riego
 
     return orden, costo
-
-
+```
 
 
 *Complejidad:*
@@ -156,6 +156,9 @@ Por tanto, la complejidad total del algoritmo es:
 $$
 T(n) = O(n \log n) + O(n) = O(n \log n)
 $$
+
+### Correccion
+El algoritmo voraz no es correcto en el sentido de optimalidad global, ya que puede producir soluciones subóptimas aunque sí es correcto funcionalmente, porque siempre produce una secuencia de riego válida y consistente.
 
 
 ---
@@ -287,6 +290,7 @@ $$
 9 & 3 & 1
 \end{bmatrix}
 $$
+
 ---
 
 ##  Comparación de Resultados
@@ -312,7 +316,11 @@ $$
 | 6 | Voraz | [2, 4, 1, 3, 0] | 30 |
 | 6 | Dinámica | [2, 1, 4, 3, 0] | 19 |
 
->  En todos los casos, la *programación dinámica* obtiene un costo total menor o igual al del método *voraz, validando que encuentra la **solución óptima*.
+>  Al comparar el **algoritmo voraz** con el método de **fuerza bruta**, se observa que en ningún caso el voraz alcanza la **solución óptima**, aunque en algunos se aproxima
+
+>Esto confirma que el **método voraz no garantiza la optimalidad**, pero ofrece una buena aproximación con un costo computacional mucho menor.
+
+>En cambio, la **programación dinámica** siempre coincide con la solución óptima, validando su correctitud y eficiencia algorítmica (aunque a un costo de tiempo y memoria exponencial).
 
 ---
 
