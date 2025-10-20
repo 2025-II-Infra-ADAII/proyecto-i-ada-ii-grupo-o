@@ -1,6 +1,6 @@
 from tkinter import Tk, filedialog
 from voraz import roV
-
+from dinamica import roPD
 
 
 
@@ -75,6 +75,11 @@ if __name__ == "__main__":
 
     orden, _ = roV(finca)
     filas, costo_total = tabla(finca, orden)
+    orden_d, _ = roPD(finca)
+    filas_d, costo_total_d = tabla(finca, orden_d)
+    save_results("resultados_dinamico.txt", filas_d, costo_total_d)
+   
+    
 
     nombre_archivo = "resultados.txt"
     save_results(nombre_archivo, filas, costo_total)

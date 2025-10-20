@@ -243,6 +243,27 @@ $$
 
 ---
 
+
+~~~python
+def ropd(n, ts, tr, p):
+    dp = [float('inf')] * (1 << n)
+    dp[0] = 0
+    sum_tr = [0] * (1 << n)
+
+    for mask in range(1 << n):
+        for j in range(n):
+            if not (mask & (1 << j)):
+                new_mask = mask | (1 << j)
+                sum_tr[new_mask] = sum_tr[mask] + tr[j]
+                costo = dp[mask] + p[j] * max(0, sum_tr[mask] + tr[j] - ts[j])
+                dp[new_mask] = min(dp[new_mask], costo)
+    return dp[(1 << n) - 1]
+~~~
+La función ropd calcula el costo mínimo de regar todos los tablones usando programación dinámica por subconjuntos.
+Cada estado de dp representa el costo mínimo para regar un conjunto específico de tablones (definido por una máscara binaria).
+En cada iteración, se agregan posibles tablones pendientes y se actualiza el costo mínimo considerando los tiempos de inicio (ts), de riego (tr) y los precios (p).
+
+
 ## Resultados Experimentales
 
 A continuación se presentan las distintas fincas evaluadas y los resultados obtenidos con cada enfoque.
@@ -326,17 +347,17 @@ $$
 | Finca | Método | Orden Óptimo | Costo Total |
 |:------|:--------|:--------------|:-------------|
 | 1 | Voraz | [2, 1, 4, 3, 0] | 20 |
-| 1 | Dinámica | [2, 4, 1, 3, 0] | 16 |
+| 1 | Dinámica | [2, 4, 1, 3, 0] | 14 |
 | 2 | Voraz | [2, 1, 4, 3, 0] | 24 |
-| 2 | Dinámica | [2, 4, 1, 3, 0] | 18 |
+| 2 | Dinámica | [2, 4, 1, 3, 0] | 14 |
 | 3 | Voraz | [4, 1, 2, 0, 3] | 17 |
-| 3 | Dinámica | [1, 4, 2, 0, 3] | 20 |
+| 3 | Dinámica | [1, 4, 2, 0, 3] | 9 |
 | 4 | Voraz | [2, 1, 3, 4, 0] | 33 |
-| 4 | Dinámica | [1, 2, 3, 4, 0] | 37 |
+| 4 | Dinámica | [1, 2, 3, 4, 0] | 22 |
 | 5 | Voraz | [3, 0, 1, 4, 2] | 15 |
-| 5 | Dinámica | [0, 3, 1, 4, 2] | 14 |
+| 5 | Dinámica | [0, 3, 1, 4, 2] | 10 |
 | 6 | Voraz | [2, 4, 1, 3, 0] | 30 |
-| 6 | Dinámica | [2, 1, 4, 3, 0] | 52 |
+| 6 | Dinámica | [2, 1, 4, 3, 0] | 19 |
 
 >  En todos los casos, la *programación dinámica* obtiene un costo total menor o igual al del método *voraz, validando que encuentra la **solución óptima*.
 
