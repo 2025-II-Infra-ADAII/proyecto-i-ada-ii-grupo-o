@@ -1,20 +1,25 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
-
+import sys
+import os
 import time
-from itertools import permutations, islice
+import csv
+import statistics
 import random
 import pytest
+
+# Asegurar importación desde src/
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 from src.fuerzaBruta import roFB, calcular_costo
 
 
-# ------------------ CASOS BASE ------------------
+# ---------------------------------------------------------------------
+# 🔹 CASOS BASE
+# ---------------------------------------------------------------------
 
 def test_finca_vacia():
     finca = []
     perm, cost = roFB(finca)
-    # Acepta tanto lista vacía como tupla vacía, para robustez
     assert list(perm) == []
     assert cost == 0
 
@@ -26,7 +31,9 @@ def test_un_solo_tablon():
     assert cost == 0
 
 
-# ------------------ CASOS DEL PROYECTO ------------------
+# ---------------------------------------------------------------------
+# 🔹 CASOS DEL PROYECTO
+# ---------------------------------------------------------------------
 
 def test_ejemplo_1_proyecto():
     finca = [
@@ -61,13 +68,13 @@ def test_ejemplo_2_proyecto():
 
 
 # ---------------------------------------------------------------------
-# 🔹 EJEMPLOS DEL PDF (con tolerancia)
+# 🔹 CASOS DEL PDF (con tolerancia)
 # ---------------------------------------------------------------------
 
 def test_ejemplo_1_pdf():
     finca = [(10, 3, 4), (5, 3, 3), (2, 2, 1), (8, 1, 1), (6, 4, 2)]
     perm, costo = roFB(finca)
-    print(f"\nEjemplo 1 - Permutación: {perm}, Costo: {costo}")
+    print(f"\nEjemplo 1 PDF -> Permutación: {perm}, Costo: {costo}")
     assert set(perm) == set(range(len(finca)))
     assert abs(costo - 16) <= 5
 
@@ -75,40 +82,59 @@ def test_ejemplo_1_pdf():
 def test_ejemplo_2_pdf():
     finca = [(9, 3, 4), (5, 3, 3), (2, 2, 1), (8, 1, 1), (6, 4, 2)]
     perm, costo = roFB(finca)
-    print(f"\nEjemplo 2 - Permutación: {perm}, Costo: {costo}")
+    print(f"\nEjemplo 2 PDF -> Permutación: {perm}, Costo: {costo}")
     assert set(perm) == set(range(len(finca)))
     assert abs(costo - 18) <= 5
 
 
 # ---------------------------------------------------------------------
-# 🔹 FUNCIONES AUXILIARES Y TESTS DE RENDIMIENTO
+# 🔹 FUNCIONES AUXILIARES PARA RENDIMIENTO
 # ---------------------------------------------------------------------
 
-def generar_finca(n, semilla=42):
-    random.seed(semilla)
-    return [(random.randint(5, 50), random.randint(1, 5), random.randint(1, 4)) for _ in range(n)]
+def generar_finca(n):
+    return [(i * 2 + 10, (i % 5) + 1, (i % 3) + 1) for i in range(n)]
 
 
-@pytest.mark.parametrize("tamano", [10, 100, 1000])
-def test_fuerza_bruta_escalabilidad(tamano):
-    finca = generar_finca(tamano)
-    repeticiones = 5
+def medir_promedio(funcion, finca, repeticiones=3):
     tiempos = []
-
+    costo_final = None
     for _ in range(repeticiones):
-        inicio = time.time()
-
-        if tamano <= 10:
-            roFB(finca)
-        else:
-            mejor = float('inf')
-            for perm in islice(permutations(range(min(tamano, 10))), 100):
-                costo = calcular_costo(finca, perm)
-                mejor = min(mejor, costo)
-
-        fin = time.time()
+        inicio = time.perf_counter()
+        orden, costo = funcion(finca)
+        fin = time.perf_counter()
         tiempos.append(fin - inicio)
+        costo_final = costo
+    return statistics.mean(tiempos), costo_final
 
-    promedio = sum(tiempos) / len(tiempos)
-    print(f"\nTamaño {tamano} -> Tiempo promedio: {promedio:.4f} segundos")
-    assert promedio >= 0
+
+def guardar_resultados_csv(resultados, nombre="resultados_fuerza_bruta.csv"):
+    os.makedirs("docs", exist_ok=True)
+    path = os.path.join("docs", nombre)
+    with open(path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Tamaño (n)", "Tiempo promedio (s)", "Costo total"])
+        writer.writerows(resultados)
+    print(f"\n✅ Resultados guardados en {path}")
+
+
+# ---------------------------------------------------------------------
+# 🔹 TEST DE RENDIMIENTO (solo este genera CSV)
+# ---------------------------------------------------------------------
+
+def test_fuerza_bruta_rendimiento():
+    """
+    Prueba el rendimiento del algoritmo Fuerza Bruta con distintos tamaños.
+    Genera el CSV para el análisis comparativo.
+    """
+    tamanos = [4, 5, 6, 7, 8]
+    resultados = []
+
+    for n in tamanos:
+        finca = generar_finca(n)
+        t_prom, costo = medir_promedio(roFB, finca, repeticiones=2)
+        resultados.append((n, round(t_prom, 6), costo))
+        print(f"[FUERZA BRUTA] n={n:<6} | Tiempo promedio: {t_prom:.6f}s | Costo total: {costo}")
+
+        assert t_prom >= 0
+
+    guardar_resultados_csv(resultados)
