@@ -1,6 +1,7 @@
 from tkinter import Tk, filedialog
 from voraz import roV
 from dinamica import roPD
+from fuerzaBruta import roFB
 
 
 
@@ -78,6 +79,10 @@ if __name__ == "__main__":
     orden_d, _ = roPD(finca)
     filas_d, costo_total_d = tabla(finca, orden_d)
     save_results("resultados_dinamico.txt", filas_d, costo_total_d)
+
+    orden_f, _ = roFB(finca)
+    filas_f, costo_total_f = tabla(finca, orden_f)
+    save_results("resultados_fuerzaBruta.txt", filas_f, costo_total_f)
    
     
 
