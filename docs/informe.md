@@ -55,7 +55,7 @@ La estrategia de *fuerza bruta* evalúa *todas las posibles permutaciones* del o
 
 #### Implementación en Python
 
-python
+```python
 from itertools import permutations
 
 def calcular_costo(finca, perm):
@@ -82,65 +82,12 @@ def roFB(finca):
             mejor_perm = perm
 
     return mejor_perm, costo_minimo
+```
 
 
-Ejemplo de ejecución
-Entrada:
 
-𝐹
-1
-=
-⟨
-⟨
-10
-,
-3
-,
-4
-⟩
-,
-⟨
-5
-,
-3
-,
-3
-⟩
-,
-⟨
-2
-,
-2
-,
-1
-⟩
-,
-⟨
-8
-,
-1
-,
-1
-⟩
-,
-⟨
-6
-,
-4
-,
-2
-⟩
-⟩
-F 
-1
-​
- =⟨⟨10,3,4⟩,⟨5,3,3⟩,⟨2,2,1⟩,⟨8,1,1⟩,⟨6,4,2⟩⟩
-Salida esperada:
 
-yaml
-Copiar código
-Mejor orden de riego: (2, 1, 4, 3, 0)
-Costo mínimo: 16
+
 Complejidad
 Generación de permutaciones: $O(n!)$
 
