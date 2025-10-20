@@ -7,21 +7,23 @@ from fuerzaBruta import roFB
 
 #cargar las fincas en tuplas con sus datos (ts, tr, p)
 
-def cargar_txt(load_file):
+def cargar_txt(archivo):
     finca = []
-    with open(load_file, "r") as file:
-        for line in file:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                ts, tr, p = map(float, line.strip().split())
-                finca.append((ts, tr, p))
-   
-            except ValueError:
-                print(f"Linea invalida en el archivo: {line}")
-                continue
+    with open(archivo, "r") as file:
+        lineas = [line.strip() for line in file if line.strip()]
+
+    # Si la primera línea es un número, es el formato nuevo
+    if lineas[0].isdigit():
+        lineas = lineas[1:]  # quitar la línea de cantidad
+
+    for line in lineas:
+        # Permitir tanto comas como espacios
+        partes = line.replace(",", " ").split()
+        if len(partes) == 3:
+            ts, tr, p = map(int, partes)
+            finca.append((ts, tr, p))
     return finca
+
 
 def choose_file():
     Tk().withdraw()  
